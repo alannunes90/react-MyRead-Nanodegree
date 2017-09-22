@@ -21,6 +21,7 @@ class BooksApp extends Component {
 
   /**
   * @description Chama modal para obter os detalhes do livro
+  * @param {string} bookId - O identificador do livro
   */
   submitDetaisBook = (bookId) => {
     
