@@ -137,7 +137,7 @@ class BooksApp extends Component {
         <Route exact path='/' render={() => (
           <div className="list-books">
             <div className="list-books-title">
-              <h1>Minhas leituras</h1>
+              <h1>My reads</h1>
             </div>
             <ListBooks
               books={this.state.books}
