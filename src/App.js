@@ -20,22 +20,6 @@ class BooksApp extends Component {
   }
 
   /**
-  * @description Altera o localStorage
-  * @param {string} local - O localStorage que deve ser usado para guardar as informações
-  * @param {array} livros - O(s) livro(s) que armazenaremos no localStorage
-  */
-  updateLocalStorage(local, livros) {
-    window.localStorage.setItem(local, JSON.stringify(livros));
-  }
-
-  /**
-  * @description Limpa todos os localStorage
-  */
-  clearLocalStorage() {
-    window.localStorage.removeItem('localStorageBooks');
-  }
-
-  /**
   * @description Chama modal para obter os detalhes do livro
   */
   submitDetaisBook = (bookId) => {
@@ -59,8 +43,6 @@ class BooksApp extends Component {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
     })
-    //TODO: Se tiver offline, usar o localStorage
-    // books: JSON.parse(window.localStorage.getItem('localStorageBooks'))
   }
 
   /**
