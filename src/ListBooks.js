@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Book from './Book.js'
+//import Book from './Book.js'
+import BookShelf from './BookShelf.js';
 
 class ListBooks extends Component {
     static propTypes = {
@@ -16,54 +17,24 @@ class ListBooks extends Component {
         
     return (
         <div className="list-books-content">
-            <div className="bookshelf">
-                <h2 className="bookshelf-title">Currently Reading</h2>
-                <div className="bookshelf-books">
-                <ol className="books-grid">
-                    {books.filter(l => l.shelf === 'currentlyReading').map((book) => (
-                        <Book 
-                            key={book.id} 
-                            book={book}
-                            onAlterarEstadoLivro={onAlterarEstadoLivro}
-                            shelf={book.shelf}
-                            onSubmitDetaisBook={onSubmitDetaisBook}
-                         />
-                    ))}
-                </ol>
-            </div>
-            </div>
-            <div className="bookshelf">
-                <h2 className="bookshelf-title">Want to read</h2>
-                <div className="bookshelf-books">
-                <ol className="books-grid">
-                    {books.filter(l => l.shelf === 'wantToRead').map((book) => (
-                        <Book 
-                            key={book.id} 
-                            book={book}
-                            onAlterarEstadoLivro={onAlterarEstadoLivro}
-                            shelf={book.shelf}
-                            onSubmitDetaisBook={onSubmitDetaisBook}
-                         />
-                    ))}
-                </ol>
-                </div>
-            </div>
-            <div className="bookshelf">
-                <h2 className="bookshelf-title">Read</h2>
-                <div className="bookshelf-books">
-                <ol className="books-grid">
-                    {books.filter(l => l.shelf === 'read').map((book) => (
-                        <Book 
-                            key={book.id} 
-                            book={book}
-                            onAlterarEstadoLivro={onAlterarEstadoLivro}
-                            shelf={book.shelf}
-                            onSubmitDetaisBook={onSubmitDetaisBook}
-                         />
-                    ))}
-                </ol>
-                </div>
-            </div>
+            <BookShelf 
+                title={'Currently Reading'}
+                books={books.filter(l => l.shelf === 'currentlyReading')} 
+                onAlterarEstadoLivro={onAlterarEstadoLivro} 
+                onSubmitDetaisBook={onSubmitDetaisBook} 
+            />
+            <BookShelf 
+                title={'Want to Read'}
+                books={books.filter(l => l.shelf === 'wantToRead')} 
+                onAlterarEstadoLivro={onAlterarEstadoLivro} 
+                onSubmitDetaisBook={onSubmitDetaisBook} 
+            />
+            <BookShelf 
+                title={'read'}
+                books={books.filter(l => l.shelf === 'read')} 
+                onAlterarEstadoLivro={onAlterarEstadoLivro} 
+                onSubmitDetaisBook={onSubmitDetaisBook} 
+            />
         </div>
     )
   }
