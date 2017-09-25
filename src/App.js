@@ -54,25 +54,23 @@ class BooksApp extends Component {
     if(query){
       BooksAPI.search(query).then((livros) => {
         
-        //TODO: 
-        // Reference: http://2ality.com/2015/01/es6-set-operations.html
         if (livros.error === 'empty query')
         {
           this.setState({ booksSearch:[] })
         }
         else 
         {
-          //TODO: Buscar todos os identificadores dos livros
+          // Buscar todos os identificadores dos livros
           const idBooks = new Set(livros.map(l => l.id));
 
-          //TODO: Buscar o identificadores dos livros que estão na prateleira
+          // Buscar o identificadores dos livros que estão na prateleira
           const idBooksShelf = new Set(this.state.books.map(l => l.id));
 
-          //TODO: Remover os livros que já estão nas prateleiras e receber identificador do livro
+          // Remover os livros que já estão nas prateleiras e receber identificador do livro
           let idBooksNoShelf = new Set(
               [...idBooks].filter(x => !idBooksShelf.has(x)));
           
-          //TODO: Buscar o objeto Livro, através do identificadores dos livros que não estão na prateleira
+          // Buscar o objeto Livro, através do identificadores dos livros que não estão na prateleira
           const booksSearch = livros.filter( function(n) {return this.has(n.id)}, idBooksNoShelf);
 
           this.setState({ booksSearch })
@@ -91,27 +89,13 @@ class BooksApp extends Component {
   */
   alterarEstadoLivro = (book, shelf) => {
     
-    BooksAPI.update(book, shelf);
-
-    // TODO: Remove da prateleira atual
-    this.setState((state) => ({
-      books: state.books.filter(l => l.id !== book.id)
-    }))
-
-    // TODO: Remove do search
-    this.setState((state) => ({
-      booksSearch: state.booksSearch.filter(l => l.id !== book.id)
-    }))
-
-    // TODO: Incluir o livro na sua nova prateleira, caso não tenha sido removido "none"
-    if (shelf !== 'none')
-    {
-      book.shelf = shelf;
+    BooksAPI.update(book, shelf).then(() => {
+      book.shelf = shelf
       this.setState((state) => ({
-        books: state.books.concat([book])
+        booksSearch: state.booksSearch.filter(b => b.id !== book.id),
+        books: state.books.filter(b => b.id !== book.id).concat(book).filter(b => b.shelf !== 'none')
       }))
-    }
-
+    })
   }
 
   render() {
