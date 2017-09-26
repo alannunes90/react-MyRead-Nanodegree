@@ -7,12 +7,15 @@ import * as BooksAPI from './BooksAPI';
 import Search from './Search.js';
 import ListBooks from './ListBooks.js';
 import BookDetails from './BookDetails.js';
+
 var debounce = require('lodash.debounce');
+var Loader = require('react-loader');
 
 class BooksApp extends Component {
   state = {
     books: [],
-    booksSearch: []
+    booksSearch: [],
+    loaded: false
   }
   
   componentDidMount() {
@@ -42,7 +45,7 @@ class BooksApp extends Component {
   */
   getBooks = () => {
     BooksAPI.getAll().then((books) => {
-      this.setState({ books })
+      this.setState({ books, loaded: true })
     })
   }
 
@@ -51,14 +54,16 @@ class BooksApp extends Component {
   * @param {string} query - O valor a ser buscado
   */
   searchLivros = (query) => {
-    console.dir('passou');
+
+    this.setState({ loaded: false });
+    
     if(query){
 
       BooksAPI.search(query).then((livros) => {
         
         if (livros.error === 'empty query')
         {
-          this.setState({ booksSearch:[] })
+          this.setState({ booksSearch:[], loaded: true })
         }
         else 
         {
@@ -75,13 +80,14 @@ class BooksApp extends Component {
           // Buscar o objeto Livro, através do identificadores dos livros que não estão na prateleira
           const booksSearch = livros.filter( function(n) {return this.has(n.id)}, idBooksNoShelf);
 
-          this.setState({ booksSearch })
+          this.setState({ booksSearch, loaded: true })
+          
         }
       
       })
     }
     else 
-      this.setState({ booksSearch:[] })
+      this.setState({ booksSearch:[], loader: true })
   }
 
   /**
@@ -103,6 +109,7 @@ class BooksApp extends Component {
   render() {
     return (
       <div className="app">
+        <Loader loaded={this.state.loaded}></Loader>
         <Route exact path='/' render={() => (
           <div className="list-books">
             <div className="list-books-title">
