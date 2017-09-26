@@ -7,7 +7,7 @@ import * as BooksAPI from './BooksAPI';
 import Search from './Search.js';
 import ListBooks from './ListBooks.js';
 import BookDetails from './BookDetails.js';
-
+var debounce = require('lodash.debounce');
 
 class BooksApp extends Component {
   state = {
@@ -51,7 +51,9 @@ class BooksApp extends Component {
   * @param {string} query - O valor a ser buscado
   */
   searchLivros = (query) => {
+    console.dir('passou');
     if(query){
+
       BooksAPI.search(query).then((livros) => {
         
         if (livros.error === 'empty query')
@@ -119,7 +121,7 @@ class BooksApp extends Component {
         <Route path='/search' render={() => (
           <Search 
             books={this.state.booksSearch}
-            onSearchLivros={this.searchLivros}
+            onSearchLivros={debounce(this.searchLivros,1000)}
             onAlterarEstadoLivro={this.alterarEstadoLivro}
             onSubmitDetaisBook={this.submitDetaisBook}
           />
