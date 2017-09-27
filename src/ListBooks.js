@@ -6,33 +6,33 @@ import BookShelf from './BookShelf.js';
 class ListBooks extends Component {
     static propTypes = {
         books: PropTypes.array.isRequired,
-        onAlterarEstadoLivro: PropTypes.func.isRequired,
+        onUpdateBookShelf: PropTypes.func.isRequired,
         onSubmitDetaisBook:  PropTypes.func.isRequired
     }
 
     render() {
-        const { books } = this.props
-        const { onAlterarEstadoLivro } = this.props
-        const { onSubmitDetaisBook } = this.props
+        const { books, 
+                onUpdateBookShelf,
+                onSubmitDetaisBook } = this.props
         
     return (
         <div className="list-books-content">
             <BookShelf 
                 title={'Currently Reading'}
                 books={books.filter(l => l.shelf === 'currentlyReading')} 
-                onAlterarEstadoLivro={onAlterarEstadoLivro} 
+                onUpdateBookShelf={onUpdateBookShelf} 
                 onSubmitDetaisBook={onSubmitDetaisBook} 
             />
             <BookShelf 
                 title={'Want to Read'}
                 books={books.filter(l => l.shelf === 'wantToRead')} 
-                onAlterarEstadoLivro={onAlterarEstadoLivro} 
+                onUpdateBookShelf={onUpdateBookShelf} 
                 onSubmitDetaisBook={onSubmitDetaisBook} 
             />
             <BookShelf 
                 title={'read'}
                 books={books.filter(l => l.shelf === 'read')} 
-                onAlterarEstadoLivro={onAlterarEstadoLivro} 
+                onUpdateBookShelf={onUpdateBookShelf} 
                 onSubmitDetaisBook={onSubmitDetaisBook} 
             />
         </div>

@@ -36,7 +36,7 @@ class BooksApp extends Component {
       childrenElement: () => <BookDetails book={bookDetails} />,       // Custom UI or Component 
       confirmLabel: 'Yes',                           // Text button confirm 
       cancelLabel: 'Cancel',                             // Text button cancel 
-      onConfirm: () => this.alterarEstadoLivro(bookDetails, 'wantToRead'),    // Action after Confirm 
+      onConfirm: () => this.updateBookShelf(bookDetails, 'wantToRead'),    // Action after Confirm 
     })
   };
 
@@ -53,22 +53,22 @@ class BooksApp extends Component {
   * @description Pesquisa livros
   * @param {string} query - O valor a ser buscado
   */
-  searchLivros = (query) => {
+  searchBooks = (query) => {
 
     this.setState({ loaded: false });
     
     if(query){
 
-      BooksAPI.search(query).then((livros) => {
+      BooksAPI.search(query).then((books) => {
         
-        if (livros.error === 'empty query')
+        if (books.error === 'empty query')
         {
           this.setState({ booksSearch:[], loaded: true })
         }
         else 
         {
           // Buscar todos os identificadores dos livros
-          const idBooks = new Set(livros.map(l => l.id));
+          const idBooks = new Set(books.map(l => l.id));
 
           // Buscar o identificadores dos livros que estão na prateleira
           const idBooksShelf = new Set(this.state.books.map(l => l.id));
@@ -78,7 +78,7 @@ class BooksApp extends Component {
               [...idBooks].filter(x => !idBooksShelf.has(x)));
           
           // Buscar o objeto Livro, através do identificadores dos livros que não estão na prateleira
-          const booksSearch = livros.filter( function(n) {return this.has(n.id)}, idBooksNoShelf);
+          const booksSearch = books.filter( function(n) {return this.has(n.id)}, idBooksNoShelf);
 
           this.setState({ booksSearch, loaded: true })
           
@@ -95,7 +95,7 @@ class BooksApp extends Component {
   * @param {object} book - Objeto livro
   * @param {string} shelf - A prateleira que o livro será alocado
   */
-  alterarEstadoLivro = (book, shelf) => {
+  updateBookShelf = (book, shelf) => {
     
     BooksAPI.update(book, shelf).then(() => {
       book.shelf = shelf
@@ -117,7 +117,7 @@ class BooksApp extends Component {
             </div>
             <ListBooks
               books={this.state.books}
-              onAlterarEstadoLivro={this.alterarEstadoLivro}
+              onUpdateBookShelf={this.updateBookShelf}
               onSubmitDetaisBook={this.submitDetaisBook}
             />
             <div className="open-search">
@@ -128,8 +128,8 @@ class BooksApp extends Component {
         <Route path='/search' render={() => (
           <Search 
             books={this.state.booksSearch}
-            onSearchLivros={debounce(this.searchLivros,1000)}
-            onAlterarEstadoLivro={this.alterarEstadoLivro}
+            onSearchBooks={debounce(this.searchBooks,1000)}
+            onUpdateBookShelf={this.updateBookShelf}
             onSubmitDetaisBook={this.submitDetaisBook}
           />
         )}/>

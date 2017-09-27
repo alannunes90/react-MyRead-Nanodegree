@@ -7,8 +7,8 @@ import Book from './Book'
 class Search extends Component {
     static propTypes = {
         books: PropTypes.array.isRequired,
-        onSearchLivros: PropTypes.func.isRequired,
-        onAlterarEstadoLivro: PropTypes.func.isRequired,
+        onSearchBooks: PropTypes.func.isRequired,
+        onUpdateBookShelf: PropTypes.func.isRequired,
         onSubmitDetaisBook: PropTypes.func.isRequired
     }
 
@@ -22,7 +22,7 @@ class Search extends Component {
     */
     updateQuery = (query) => {
         this.setState({ query })
-        this.props.onSearchLivros(query)
+        this.props.onSearchBooks(query)
     }
 
     /**
@@ -30,14 +30,14 @@ class Search extends Component {
     */
     clearQuery = () => {
         this.setState({ query: '' })
-        this.props.onSearchLivros('')
+        this.props.onSearchBooks('')
     }
 
     render() {
-        const { books } = this.props
         const { query } = this.state
-        const { onAlterarEstadoLivro } = this.props
-        const { onSubmitDetaisBook } = this.props
+        const { books, 
+                onUpdateBookShelf,
+                onSubmitDetaisBook } = this.props
         
         return (
             <div className="search-books">
@@ -68,7 +68,7 @@ class Search extends Component {
                                 <Book 
                                     key={book.id}
                                     book={book}
-                                    onAlterarEstadoLivro={onAlterarEstadoLivro}
+                                    onUpdateBookShelf={onUpdateBookShelf}
                                     shelf={'none'}
                                     onSubmitDetaisBook={onSubmitDetaisBook}
                                 />

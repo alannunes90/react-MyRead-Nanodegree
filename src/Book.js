@@ -4,18 +4,17 @@ import PropTypes from 'prop-types'
 class Book extends React.Component {
     static propTypes = {
         book: PropTypes.object.isRequired,
-        onAlterarEstadoLivro: PropTypes.func.isRequired,
+        onUpdateBookShelf: PropTypes.func.isRequired,
         onSubmitDetaisBook:  PropTypes.func.isRequired,
         shelf: PropTypes.string.isRequired
     }
 
     changeCombo = (event) => {
-        this.props.onAlterarEstadoLivro(this.props.book, event.target.value)
+        this.props.onUpdateBookShelf(this.props.book, event.target.value)
     }
 
     render() {
-        const { book } = this.props
-        const { shelf } = this.props
+        const { book, shelf } = this.props
         
     return (
         <li>
